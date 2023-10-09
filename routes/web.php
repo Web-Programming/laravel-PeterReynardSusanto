@@ -52,7 +52,7 @@ route::prefix("/mahasiswa")->group(function(){
 });
 
     route::get("/materi", function(){
-        echo "<h1>Materi Perkuliahan</h1>";
+        echo "<h1>Materi Perkuliahan!</h1>";
     });
     //dan lain2
 });
