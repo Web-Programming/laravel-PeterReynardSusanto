@@ -18,41 +18,66 @@ Route::get('/', function () {
 });
 
 //Buat route ke halaman profil
-Route::get("/profil", function(){
+Route::get("/profil", function () {
     return view('profile');
 });
 
-Route::get("/mahasiswa{nama}",function($nama = "Peter") {
+Route::get("/mahasiswa{nama}", function ($nama = "Peter") {
     echo "<h1>Halo Nama Saya $nama</h2>";
 });
 
-Route::get("/mahasiswa2{nama?}",function($nama = "Peter") {
+Route::get("/mahasiswa2{nama?}", function ($nama = "Peter") {
     echo "<h1>Halo Nama Saya $nama</h2>";
 });
 
-Route::get("/mahasiswa{nama?}/{pekerjaan?}",function($nama = "Peter", $pekerjaan = "Mahasiswa") {
+Route::get("/mahasiswa{nama?}/{pekerjaan?}", function ($nama = "Peter", $pekerjaan = "Mahasiswa") {
     echo "<h1>Halo Nama Saya $nama. Saya adalah $pekerjaan</h2>";
 });
 
-//Redirect dan Named Routed 
-Route::get("/hubungi", function(){ 
+//Redirect dan Named Routed
+Route::get("/hubungi", function () {
 
     echo "<h1>Hubungi Kami</h1>";
 })->name("call"); //named route
 
 Route::redirect("/contact", '/hubungi');
 
-Route::get("/halo", function(){
-    echo "<a href='". route('call') . "'>" . route('call'). "</a>";
+Route::get("/halo", function () {
+    echo "<a href='" . route('call') . "'>" . route('call') . "</a>";
 });
 
-route::prefix("/mahasiswa")->group(function(){
-    route::get("/jadwal", function(){
+route::prefix("/mahasiswa")->group(function () {
+    route::get("/jadwal", function () {
         echo "<h1>Jadwal Dosen</h1>";
-});
+    });
 
-    route::get("/materi", function(){
+    route::get("/materi", function () {
         echo "<h1>Materi Perkuliahan!</h1>";
     });
     //dan lain2
+
+
+
+
+});
+
+Route::get('/dosen', function () {
+    return view('dosen');
+});
+
+Route::get('/fakultas', function () {
+    // return view('fakultas.index',["ilkom" => "Fakultas Ilmu Komputer dan Rekayasa"]);
+    //return view('fakultas.index', ["fakultas" => ["Fakultas Ilmu Komputer dan Rekayasa", "Fakultas Ilmu Ekonomi"]]);
+
+    //return view('fakultas.index')->with("fakultas", ["Fakultas Ilmu Komputer dan Rekayasa", "Fakultas Ilmu Ekonomi"]);
+
+    //$fakultas = ["Fakultas Ilmu Komputer dan Rekayasa", "Fakultas Ilmu Ekonomi"];
+    //return view('fakultas.index', compact('fakultas'));
+
+    $kampus = "Universitas Multi Data Palembang";
+
+    $fakultas = ["Fakultas Ilmu Komputer dan Rekayasa", "Fakultas Ilmu Ekonomi"];
+
+    return view('fakultas.index', compact('fakultas', 'kampus'));
+
 });
