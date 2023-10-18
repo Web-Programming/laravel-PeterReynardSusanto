@@ -60,5 +60,6 @@ class KurikulumController extends Controller
     public function destroy(string $id)
     {
         //
+        //
     }
 }
