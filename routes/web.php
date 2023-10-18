@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers;
+use App\Http\Controllers\KurikulumController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,4 +82,9 @@ Route::get('/fakultas', function () {
 
     return view('fakultas.index', compact('fakultas', 'kampus'));
 
+
+
 });
+Route::get('/prodi', [ProdiController::class, 'index']);
+Route::resource('/prodi', KurikulumController::class);
+Route::apiResource('/prodi', DosenController::class, 'index');
