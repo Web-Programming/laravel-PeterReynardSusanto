@@ -19,4 +19,8 @@ class Mahasiswa extends Model
 
     protected $guarded = [];
 
+    public function prodi() {
+        return $this->belongsTo('App\Models\Prodi');
+    }
+
 }
