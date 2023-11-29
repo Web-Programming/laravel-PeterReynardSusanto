@@ -81,4 +81,9 @@ public function destroy(Prodi $prodi) {
     ->with('info', "Prodi $prodi->nama berhasil dihapus.");
 }
 
+public function __construct() {
+    $this->middleware('auth');
+    $this->middleware('auth')->except('create');
+}
+
 }
