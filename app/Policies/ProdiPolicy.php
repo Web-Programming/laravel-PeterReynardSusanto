@@ -4,14 +4,17 @@ namespace App\Policies;
 
 use App\Models\Prodi;
 use App\Models\User;
+use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
 class ProdiPolicy
 {
+    use HandlesAuthorization;
+
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         //
     }
@@ -19,7 +22,7 @@ class ProdiPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Prodi $prodi)
+    public function view(User $user, Prodi $prodi): bool
     {
         //
     }
@@ -27,15 +30,20 @@ class ProdiPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
-        //
+        // return $user->email === 'salmon@gmail.com';
+
+        return in_array($user->email, [
+            'salmon@gmail.com',
+            'king@gmail.com'
+        ]);
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Prodi $prodi)
+    public function update(User $user, Prodi $prodi): bool
     {
         //
     }
@@ -43,15 +51,17 @@ class ProdiPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Prodi $prodi)
+    public function delete(User $user, Prodi $prodi): bool
     {
-        //
+        return in_array($user->email, [
+            'salmon@gmail.com'
+        ]);
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Prodi $prodi)
+    public function restore(User $user, Prodi $prodi): bool
     {
         //
     }
@@ -59,7 +69,7 @@ class ProdiPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Prodi $prodi)
+    public function forceDelete(User $user, Prodi $prodi): bool
     {
         //
     }

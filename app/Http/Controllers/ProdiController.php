@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\prodi;
 
+
 class ProdiController extends Controller
 {
     public function index() {
+        // $kampus = "Universitas Multi Data Palembang";
+        // return view('prodi.index')->with('kampus', $kampus);
         $prodis = Prodi::all();
         return view('prodi.index')->with('prodis', $prodis);
     }
@@ -33,58 +36,58 @@ class ProdiController extends Controller
     public function create() {
         return view('prodi.create');
     }
-    public function store(Request $request)
-     {
-        //dump($request);
-       // echo $request->nama;
-       $validateData =$request->validate([
-        'nama' => 'required|min:5|max:20',
-        'foto' => 'required|file|image|max:5000',
-       ]);
-       // ambil ekstensi file
-       $ext = $request->foto->getClientOriginalExtension();
-       // rename nama file
-       $nama_file = 'foto-' .time() . "." . $ext;
-       $path = $request->foto->storeAs('public', $nama_file);
 
-      $prodi = new prodi();
-      $prodi->nama = $validateData['nama'];//simpan nilai input ($validateData['nama]) ke dalam
-      $prodi->foto = $nama_file;
-      $prodi->save();   //simpan ke dalam tabel prodi
+    public function store(Request $request) {
+        // dump($request);
+        // echo $request->nama;
 
-      //return "Data prodi $prodi->nama berhasil disimpan ke database"; // tampilan pesan berhasil
-       $request->session()->flash('info', "Data prodi $prodi->nama berhasil disimpan ke database");
-       return redirect()->route('prodi.create');
+        $this->authorize('create', Prodi::class);
 
+        $validateData = $request->validate([
+            'nama' => 'required|min:5|max:20',
+            'foto' => 'required|file|image|max:5000',
+        ]);
+        // dump( $validateData);
+        // echo $validateData['nama'];
+        $ext = $request->foto->getClientOriginalExtension();
+        $nama_file = 'foto-' . time() . "." . $ext;
+        $path = $request->foto->storeAs('public', $nama_file);
 
+        $prodi = new Prodi();
+        $prodi->nama = $validateData['nama'];
+        $prodi->foto = $nama_file;
+        $prodi->save();
+
+        $request->session()->flash('info', "Data prodi $prodi->nama berhasil disimpan ke database");
+        return redirect('/prodi/create');
     }
-public function show(Prodi $prodi) {
-    return view('prodi.show', ['prodi'=> $prodi]);
-}
-public function edit(Prodi $prodi) {
-    return view('prodi.edit', ['prodi'=> $prodi]);
-}
-public function update(Request $request, Prodi $prodi) {
-    // dump($request->all());
-    // dump($prodi);
-    $validateData = $request->validate([
-        'nama' => 'required|min:5|max:20',
+
+    public function show(Prodi $prodi) {
+        return view('prodi.show', ['prodi' => $prodi]);
+    }
+
+    public function edit (Prodi $prodi) {
+        return view('prodi.edit', ['prodi' => $prodi]);
+    }
+
+    public function update(Request $request, Prodi $prodi) {
+        $validateData = $request->validate([
+            'nama' => 'required|min:5|max:20',
         ]);
 
-    Prodi::where('id', $prodi->id)->update($validateData);
-    $request->session()->flash('info', "Data prodi $prodi->nama berhasil diubah");
-    return redirect()->route('prodi.index');
-}
-public function destroy(Prodi $prodi) {
-    $prodi->delete();
-    return redirect()->route('prodi.index')
-    ->with('info', "Prodi $prodi->nama berhasil dihapus.");
-}
+        Prodi::where('id', $prodi->id)->update($validateData);
+        $request->session()->flash('info', "Data prodi $prodi->nama berhasil diubah");
+        return redirect()->route('prodi.index');
+    }
 
-public function __construct() {
-    $this->middleware('auth');
-    $this->middleware('auth')->except('create');
-}
+    public function destroy(Prodi $prodi) {
+        $this->authorize('delete', $prodi);
 
+        $prodi->delete();
+        return redirect()->route('prodi.index')->with("info", "Prodi $prodi->nama berhasil dihapus");
+    }
+
+    public function __construct() {
+        $this->middleware('auth')->except('create');
+    }
 }
-//
