@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\API\BaseControllers as BaseController;
+use App\Http\Controllers\API\BaseController as BaseController;
 use App\Models\User;
 use Illuminate\Support\facades\Auth;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends BaseController {
     public function register(Request $request) {
